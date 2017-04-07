@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+(define-derived-mode tic-tac-toe-mode special-mode "tic-tac-toe-mode"
+  (define-key tic-tac-toe-mode-map (kbd "<space>") 'tic-tac-toe-place))
+
 (defun coorder-initialize-area (cols rows &optional char)
   "Initialize an area for drawing."
   (dotimes (row rows)
@@ -44,8 +47,10 @@ Coordinates use an index of 0."
 
 (defun tic-tac-toe--initialize-board ()
   "Initialize the board with a \"-\" character."
-  (goto-line (point-min))
-  (coorder-initialize-area 3 3 "-")
+  (let ((inhibit-read-only t))
+    (goto-line (point-min))
+    (coorder-initialize-area 3 3 "-")
+    )
   )
 
 (defun tic-tac-toe-start ()
@@ -54,7 +59,14 @@ Coordinates use an index of 0."
   (other-window 1)
   (switch-to-buffer "*scratch*")
   (erase-buffer)
+  (tic-tac-toe-mode)
   (tic-tac-toe--initialize-board)
+  )
+
+;; CONTROLS
+(defun tic-tac-toe-place ()
+  "Place"
+  (interactive)
   )
 
 (local-set-key (kbd "<f5>") (lambda ()
