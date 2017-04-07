@@ -99,6 +99,9 @@ Coordinates use an index of 0."
 			      (save-buffer)
 			      (eval-buffer)
 			      (tic-tac-toe-start)))
+(local-set-key (kbd "<f6>") (lambda ()
+			      (interactive)
+			      (shell-command "cask exec ert-runner")))
 
 (provide 'tic-tac-toe)
 ;;; tic-tac-toe.el ends here
