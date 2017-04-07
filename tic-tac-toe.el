@@ -43,6 +43,26 @@
   "Place char at COL and ROW coordinates.
 CHAR can be any value.
 Coordinates use an index of 0."
+  (goto-line (point-min))
+  (message "placing at %s, %s" col row)
+  (dotimes (y row)
+    (next-line 1)
+    )
+  (dotimes (x col)
+    (right-char 1)
+    )
+  (delete-char 1)
+  (insert char)
+  )
+
+(defun coorder-current-col ()
+  "Col. Index of 0."
+  (current-column)
+  )
+
+(defun coorder-current-row ()
+  "Row. index of 0."
+  (- (line-number-at-pos) 1)
   )
 
 (defun tic-tac-toe--initialize-board ()
@@ -67,6 +87,10 @@ Coordinates use an index of 0."
 (defun tic-tac-toe-place ()
   "Place"
   (interactive)
+  (message "placing")
+  (let ((inhibit-read-only t))
+    (coorder-place-char-at (coorder-current-col) (coorder-current-row) "x")
+    )
   )
 
 (local-set-key (kbd "<f5>") (lambda ()
