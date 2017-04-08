@@ -25,12 +25,17 @@
 
 ;;; Code:
 
+(defvar tic-tac-toe--current-player-number 1 "Number of the current player.")
+
+(defconst tic-tac-toe--player-symbols '("x" "o") "Symbols to be used by players.")
+
 (define-derived-mode tic-tac-toe-mode special-mode "tic-tac-toe-mode")
 
 (defun tic-tac-toe-config ()
   (local-set-key (kbd "C-c SPC") 'tic-tac-toe-place))
 
 (add-hook 'tic-tac-toe-mode-hook 'tic-tac-toe-config)
+
 
 ;; COORDER
 ;;
@@ -60,6 +65,7 @@ Coordinates use an index of 0."
     )
   (delete-char 1)
   (insert char)
+  (left-char)
   )
 
 (defun coorder-current-col ()
@@ -93,6 +99,7 @@ Coordinates use an index of 0."
     )
   (tic-tac-toe-mode)
   (tic-tac-toe--initialize-board)
+  (setq tic-tac-toe--current-player-number 1)
   )
 
 ;; HELPERS 
@@ -101,8 +108,24 @@ Coordinates use an index of 0."
   "Place"
   (interactive)
   (message "placing")
-  (let ((inhibit-read-only t))
-    (coorder-place-char-at (coorder-current-col) (coorder-current-row) "x")
+  (let ((inhibit-read-only t)
+	(current-symbol (tic-tac-toe--get-current-symbol)))
+    (message "current symbol is %s" current-symbol)
+    (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
+    (tic-tac-toe--switch-to-next-player)
+    )
+  )
+
+(defun tic-tac-toe--get-current-symbol ()
+  "Gets the current symbol for the current player."
+  (nth (- tic-tac-toe--current-player-number 1) tic-tac-toe--player-symbols))
+
+(defun tic-tac-toe--switch-to-next-player ()
+  "Switch to the next player."
+  (let ((new-player-number (+ tic-tac-toe--current-player-number 1)))
+    (if (> new-player-number (length tic-tac-toe--player-symbols))
+	(setq tic-tac-toe--current-player-number 1)
+      (setq tic-tac-toe--current-player-number new-player-number))
     )
   )
 
