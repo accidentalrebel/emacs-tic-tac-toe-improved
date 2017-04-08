@@ -134,6 +134,7 @@ Coordinates use a starting index of 0."
       (if winning-coordinates
 	  (progn 
 	    (message "HERE WE GO: Winnig coordinate %s" winning-coordinates)
+	    (tic-tac-toe--highlight-winning-coordinates winning-coordinates)
 	    (tic-tac-toe--on-found-winner)
 	    t)
 	nil))))
@@ -154,34 +155,41 @@ Coordinates use a starting index of 0."
 	(throw 'found-winner winning-coordinates))
       )))
 
-  ;; EVENTS
-  ;; 
-  (defun tic-tac-toe--on-found-winner ()
-    "Handles what hoppens when someone wins."
-    (message "~~~~~~~~~~~~~~~~~~~~~~~ Found!"))
-
-  (defun tic-tac-toe--get-current-symbol ()
-    "Gets the current symbol for the current player."
-    (nth (- tic-tac-toe--current-player-number 1) tic-tac-toe--player-symbols))
-
-  (defun tic-tac-toe--switch-to-next-player ()
-    "Switch to the next player."
-    (let ((new-player-number (+ tic-tac-toe--current-player-number 1)))
-      (if (> new-player-number (length tic-tac-toe--player-symbols))
-	  (setq tic-tac-toe--current-player-number 1)
-	(setq tic-tac-toe--current-player-number new-player-number))
-      )
+(defun tic-tac-toe--highlight-winning-coordinates (coordinates)
+  (setq coordinates '((0 1) (1 1) (2 1)))
+  (dolist (coordinate coordinates)
+    (message "Checker: %s" (coorder-get-char-at (car coordinate) (car (cdr coordinate))))
     )
+  )
 
-  (local-set-key (kbd "<f5>") (lambda ()
-				(interactive)
-				(save-buffer)
-				(eval-buffer)
-				(tic-tac-toe-start)))
-  (local-set-key (kbd "<f6>") (lambda ()
-				(interactive)
-				(shell-command "cask exec ert-runner")))
+;; EVENTS
+;; 
+(defun tic-tac-toe--on-found-winner ()
+  "Handles what hoppens when someone wins."
+  (message "~~~~~~~~~~~~~~~~~~~~~~~ Found!"))
 
-  (provide 'tic-tac-toe)
+(defun tic-tac-toe--get-current-symbol ()
+  "Gets the current symbol for the current player."
+  (nth (- tic-tac-toe--current-player-number 1) tic-tac-toe--player-symbols))
+
+(defun tic-tac-toe--switch-to-next-player ()
+  "Switch to the next player."
+  (let ((new-player-number (+ tic-tac-toe--current-player-number 1)))
+    (if (> new-player-number (length tic-tac-toe--player-symbols))
+	(setq tic-tac-toe--current-player-number 1)
+      (setq tic-tac-toe--current-player-number new-player-number))
+    )
+  )
+
+(local-set-key (kbd "<f5>") (lambda ()
+			      (interactive)
+			      (save-buffer)
+			      (eval-buffer)
+			      (tic-tac-toe-start)))
+(local-set-key (kbd "<f6>") (lambda ()
+			      (interactive)
+			      (shell-command "cask exec ert-runner")))
+
+(provide 'tic-tac-toe)
 ;;; tic-tac-toe.el ends here
 
