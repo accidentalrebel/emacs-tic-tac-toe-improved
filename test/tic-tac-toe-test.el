@@ -49,3 +49,47 @@
     (should (equal (tic-tac-toe--get-current-symbol) "x"))
     (setq-local tic-tac-toe--current-player-number 2)
     (should (equal (tic-tac-toe--get-current-symbol) "o"))))
+
+(ert-deftest tic-tac-toe--check-winner ()
+  (with-temp-buffer
+    (setq-local tic-tac-toe--current-player-number 1)
+
+    ;; (coorder-initialize-area 3 3 "-")
+    ;; (should (not (tic-tac-toe--check-winner)))
+
+    (erase-buffer)			;
+    (coorder-initialize-area 3 3 "-")
+    (coorder-place-char-at 0 0 "x")
+    (coorder-place-char-at 1 0 "x")
+    (coorder-place-char-at 2 0 "x")
+    (should (tic-tac-toe--check-winner))
+
+    (erase-buffer)
+    (coorder-initialize-area 3 3 "-")
+    (coorder-place-char-at 0 1 "x")
+    (coorder-place-char-at 1 1 "x")
+    (coorder-place-char-at 2 1 "x")
+    (should (tic-tac-toe--check-winner))
+
+    (erase-buffer)
+    (coorder-initialize-area 3 3 "-")
+    (coorder-place-char-at 0 2 "x")
+    (coorder-place-char-at 1 2 "x")
+    (coorder-place-char-at 2 2 "x")
+    (should (tic-tac-toe--check-winner))
+
+    ;; (erase-buffer)
+    ;; (setq-local tic-tac-toe--current-player-number 2)
+    ;; (insert "---\n---\n---")
+    ;; (should (not (tic-tac-toe--check-winner)))
+    ;; (erase-buffer)
+    ;; (insert "ooo\n---\n---")
+    ;; (should (tic-tac-toe--check-winner))
+    ;; (erase-buffer)
+    ;; (insert "---\nooo\n---")
+    ;; (should (tic-tac-toe--check-winner))
+    ;; (erase-buffer)
+    ;; (insert "---\n---\nooo")
+    ;; (should (tic-tac-toe--check-winner))
+    )
+  )

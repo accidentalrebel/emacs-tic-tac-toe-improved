@@ -65,19 +65,16 @@ Coordinates use a starting index of 0."
   "Gets the char at COL and ROW coordinates.
 Coordinates use a starting index of 0."
   (coorder-position-point-at col row)
-  (string (char-after))
-  )
+  (string (char-after)))
 
 (defun coorder-position-point-at (col row)
   "Positions the point at COL and ROW coondinates.
 Coordinates use a starting index of 0."
-  (goto-line (point-min))
+  (goto-char (point-min))
   (dotimes (y row)
-    (next-line 1)
-    )
+    (next-line 1))
   (dotimes (x col)
-    (right-char 1)
-    )
+    (right-char 1))
   )
 
 (defun coorder-current-col ()
@@ -95,7 +92,7 @@ Coordinates use a starting index of 0."
 (defun tic-tac-toe--initialize-board ()
   "Initialize the board with a \"-\" character."
   (let ((inhibit-read-only t))
-    (goto-line (point-min))
+    (goto-char (point-min))
     (coorder-initialize-area 3 3 "-")
     )
   )
@@ -131,11 +128,12 @@ Coordinates use a starting index of 0."
 (defun tic-tac-toe--check-winner ()
   "Checks if someone already won."
   (save-excursion
-    (let ((has-won ))
-      (when (catch 'found-winner
-	      (tic-tac-toe--check-winner-horizontally))
-	(tic-tac-toe--on-found-winner)))
-    ))
+    (if (catch 'found-winner
+	  (tic-tac-toe--check-winner-horizontally))
+	(progn 
+	  (tic-tac-toe--on-found-winner)
+	  t)
+      nil)))
 
 (defun tic-tac-toe--check-winner-horizontally ()
   "Checks winner horizontally."
