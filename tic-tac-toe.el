@@ -54,18 +54,30 @@
 (defun coorder-place-char-at (col row char)
   "Place char at COL and ROW coordinates.
 CHAR can be any value.
-Coordinates use an index of 0."
+Coordinates use a starting index of 0."
+  (coorder-position-point-at col row)
+  (delete-char 1)
+  (insert char)
+  (left-char)
+  )
+
+(defun coorder-get-char-at (col row)
+  "Gets the char at COL and ROW coordinates.
+Coordinates use a starting index of 0."
+  (coorder-position-point-at col row)
+  (string (char-after))
+  )
+
+(defun coorder-position-point-at (col row)
+  "Positions the point at COL and ROW coondinates.
+Coordinates use a starting index of 0."
   (goto-line (point-min))
-  (message "placing at %s, %s" col row)
   (dotimes (y row)
     (next-line 1)
     )
   (dotimes (x col)
     (right-char 1)
     )
-  (delete-char 1)
-  (insert char)
-  (left-char)
   )
 
 (defun coorder-current-col ()
@@ -100,21 +112,40 @@ Coordinates use an index of 0."
   (tic-tac-toe-mode)
   (tic-tac-toe--initialize-board)
   (setq tic-tac-toe--current-player-number 1)
+  (message "Start!")
   )
 
 ;; HELPERS 
 ;;
 (defun tic-tac-toe-place ()
-  "Place"
+  "Places a symbol on the current point position."
   (interactive)
-  (message "placing")
   (let ((inhibit-read-only t)
 	(current-symbol (tic-tac-toe--get-current-symbol)))
-    (message "current symbol is %s" current-symbol)
     (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
+    (tic-tac-toe--check-winner)
     (tic-tac-toe--switch-to-next-player)
     )
   )
+
+(defun tic-tac-toe--check-winner ()
+  "Checks if someone already won."
+  (save-excursion
+    (let (has-won)
+      (dotimes (row 3)
+	(if has-won
+	    (tic-tac-toe--on-found-winner)
+	  (setq has-won t)
+	  (dotimes (col 3 has-won)
+	    (when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
+	      (setq has-won nil))))
+      ))))
+
+;; EVENTS
+;; 
+(defun tic-tac-toe--on-found-winner ()
+  "Handles what hoppens when someone wins."
+  (message "~~~~~~~~~~~~~~~~~~~~~~~ Found!"))
 
 (defun tic-tac-toe--get-current-symbol ()
   "Gets the current symbol for the current player."
