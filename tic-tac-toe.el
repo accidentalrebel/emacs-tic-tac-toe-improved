@@ -131,15 +131,23 @@ Coordinates use a starting index of 0."
 (defun tic-tac-toe--check-winner ()
   "Checks if someone already won."
   (save-excursion
-    (let (has-won)
-      (dotimes (row 3)
-	(if has-won
-	    (tic-tac-toe--on-found-winner)
-	  (setq has-won t)
-	  (dotimes (col 3 has-won)
-	    (when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
-	      (setq has-won nil))))
-      ))))
+    (let ((has-won ))
+      (when (catch 'found-winner
+	      (tic-tac-toe--check-winner-horizontally))
+	(tic-tac-toe--on-found-winner)))
+    ))
+
+(defun tic-tac-toe--check-winner-horizontally ()
+  "Checks winner horizontally."
+  (let (has-won)
+    (dotimes (row 3)
+      (setq has-won t)
+      (dotimes (col 3 has-won)
+	(when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
+	  (setq has-won nil)))
+      (when has-won
+	(throw 'found-winner t))
+      )))
 
 ;; EVENTS
 ;; 
