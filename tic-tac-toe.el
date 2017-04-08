@@ -103,7 +103,7 @@ Coordinates use a starting index of 0."
   (interactive)
   (other-window 1)
   (switch-to-buffer "*scratch*")
-  ;(buffer-disable-undo "*scratch*")
+					;(buffer-disable-undo "*scratch*")
   (let ((inhibit-read-only t))
     (erase-buffer)
     )
@@ -129,53 +129,59 @@ Coordinates use a starting index of 0."
 (defun tic-tac-toe--check-winner ()
   "Checks if someone already won."
   (save-excursion
-    (if (catch 'found-winner
-	  (tic-tac-toe--check-winner-horizontally))
-	(progn 
-	  (tic-tac-toe--on-found-winner)
-	  t)
-      nil)))
+    (let ((winning-coordinates (catch 'found-winner
+				 (tic-tac-toe--get-winner-horizontally))))
+      (if winning-coordinates
+	  (progn 
+	    (message "HERE WE GO: Winnig coordinate %s" winning-coordinates)
+	    (tic-tac-toe--on-found-winner)
+	    t)
+	nil))))
 
-(defun tic-tac-toe--check-winner-horizontally ()
+(defun tic-tac-toe--get-winner-horizontally ()
   "Checks winner horizontally."
-  (let (has-won)
+  (let ((has-won nil)
+	(winning-coordinates ()))
     (dotimes (row 3)
       (setq has-won t)
+      (setq winning-coordinates ())
       (dotimes (col 3 has-won)
 	(when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
-	  (setq has-won nil)))
+	  (setq has-won nil))
+	(setq winning-coordinates (append winning-coordinates (list (list col row))))
+	)
       (when has-won
-	(throw 'found-winner t))
+	(throw 'found-winner winning-coordinates))
       )))
 
-;; EVENTS
-;; 
-(defun tic-tac-toe--on-found-winner ()
-  "Handles what hoppens when someone wins."
-  (message "~~~~~~~~~~~~~~~~~~~~~~~ Found!"))
+  ;; EVENTS
+  ;; 
+  (defun tic-tac-toe--on-found-winner ()
+    "Handles what hoppens when someone wins."
+    (message "~~~~~~~~~~~~~~~~~~~~~~~ Found!"))
 
-(defun tic-tac-toe--get-current-symbol ()
-  "Gets the current symbol for the current player."
-  (nth (- tic-tac-toe--current-player-number 1) tic-tac-toe--player-symbols))
+  (defun tic-tac-toe--get-current-symbol ()
+    "Gets the current symbol for the current player."
+    (nth (- tic-tac-toe--current-player-number 1) tic-tac-toe--player-symbols))
 
-(defun tic-tac-toe--switch-to-next-player ()
-  "Switch to the next player."
-  (let ((new-player-number (+ tic-tac-toe--current-player-number 1)))
-    (if (> new-player-number (length tic-tac-toe--player-symbols))
-	(setq tic-tac-toe--current-player-number 1)
-      (setq tic-tac-toe--current-player-number new-player-number))
+  (defun tic-tac-toe--switch-to-next-player ()
+    "Switch to the next player."
+    (let ((new-player-number (+ tic-tac-toe--current-player-number 1)))
+      (if (> new-player-number (length tic-tac-toe--player-symbols))
+	  (setq tic-tac-toe--current-player-number 1)
+	(setq tic-tac-toe--current-player-number new-player-number))
+      )
     )
-  )
 
-(local-set-key (kbd "<f5>") (lambda ()
-			      (interactive)
-			      (save-buffer)
-			      (eval-buffer)
-			      (tic-tac-toe-start)))
-(local-set-key (kbd "<f6>") (lambda ()
-			      (interactive)
-			      (shell-command "cask exec ert-runner")))
+  (local-set-key (kbd "<f5>") (lambda ()
+				(interactive)
+				(save-buffer)
+				(eval-buffer)
+				(tic-tac-toe-start)))
+  (local-set-key (kbd "<f6>") (lambda ()
+				(interactive)
+				(shell-command "cask exec ert-runner")))
 
-(provide 'tic-tac-toe)
+  (provide 'tic-tac-toe)
 ;;; tic-tac-toe.el ends here
 
