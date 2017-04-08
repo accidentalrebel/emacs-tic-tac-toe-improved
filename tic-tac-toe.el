@@ -133,7 +133,6 @@ Coordinates use a starting index of 0."
 				 (tic-tac-toe--get-winner-horizontally))))
       (if winning-coordinates
 	  (progn 
-	    (message "HERE WE GO: Winnig coordinate %s" winning-coordinates)
 	    (tic-tac-toe--highlight-winning-coordinates winning-coordinates)
 	    (tic-tac-toe--on-found-winner)
 	    t)
@@ -156,9 +155,8 @@ Coordinates use a starting index of 0."
       )))
 
 (defun tic-tac-toe--highlight-winning-coordinates (coordinates)
-  (setq coordinates '((0 1) (1 1) (2 1)))
   (dolist (coordinate coordinates)
-    (message "Checker: %s" (coorder-get-char-at (car coordinate) (car (cdr coordinate))))
+    (message "Highlight checker: %s" (coorder-get-char-at (car coordinate) (car (cdr coordinate))))
     )
   )
 
@@ -166,7 +164,7 @@ Coordinates use a starting index of 0."
 ;; 
 (defun tic-tac-toe--on-found-winner ()
   "Handles what hoppens when someone wins."
-  (message "~~~~~~~~~~~~~~~~~~~~~~~ Found!"))
+  (message "Found!"))
 
 (defun tic-tac-toe--get-current-symbol ()
   "Gets the current symbol for the current player."
