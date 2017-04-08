@@ -29,19 +29,23 @@
 
 (defconst tic-tac-toe--player-symbols '("x" "o") "Symbols to be used by players.")
 
-(defface tic-tac-toe--test-face '((t . (:background "green" :foreground "black"))) "Test Face" :group 'tic-tac-toe-faces)
+(defface tic-tac-toe--win-face '((t . (:background "green" :foreground "black"))) "Test Face" :group 'tic-tac-toe-faces)
 
 (define-derived-mode tic-tac-toe-mode special-mode "tic-tac-toe-mode")
-(defun tic-tac-toe-config ()
+
+(defun tic-tac-toe--control-config ()
+  "Initial config for setting of controls."
   (local-set-key (kbd "C-c SPC") 'tic-tac-toe-place))
 
-(add-hook 'tic-tac-toe-mode-hook 'tic-tac-toe-config)
-
+(add-hook 'tic-tac-toe-mode-hook 'tic-tac-toe--control-config)
 
 ;; COORDER
 ;;
 (defun coorder-initialize-area (cols rows &optional char)
-  "Initialize an area for drawing."
+  "Initialize an area for drawing.
+COLS specify the number of columns.
+ROWS specify the number of rows.
+[optional] CHAR, the char to place."
   (dotimes (row rows)
     (dotimes (col cols)
       (insert (if char
@@ -73,25 +77,27 @@ Coordinates use a starting index of 0."
 Coordinates use a starting index of 0."
   (goto-char (point-min))
   (dotimes (y row)
-    (next-line 1))
+    (forward-line 1))
   (beginning-of-line)
   (dotimes (x col)
     (right-char 1))
   )
 
-(defun coorder-set-text-property-at (col row)
-  "Set the text property at the given position."
+(defun coorder-set-text-property-at (col row face)
+  "Set the text property at COL and ROW with FACE."
   (coorder-position-point-at col row)
-  (put-text-property (point) (+ (point) 1) 'font-lock-face 'tic-tac-toe--test-face)
+  (put-text-property (point) (+ (point) 1) 'font-lock-face face)
   )
 
 (defun coorder-current-col ()
-  "Col. Index of 0."
+  "Return the current col at point position.
+Has an index of 0."
   (current-column)
   )
 
 (defun coorder-current-row ()
-  "Row. index of 0."
+  "Return the current row at point position.
+Has an index of 0."
   (- (line-number-at-pos) 1)
   )
 
@@ -120,7 +126,7 @@ Coordinates use a starting index of 0."
   (message "Start!")
   )
 
-;; HELPERS 
+;; HELPERS
 ;;
 (defun tic-tac-toe-place ()
   "Places a symbol on the current point position."
@@ -134,7 +140,7 @@ Coordinates use a starting index of 0."
   )
 
 (defun tic-tac-toe--check-winner ()
-  "Checks if someone already won."
+  "Check if any player has already won."
   (save-excursion
     (let ((winning-coordinates (catch 'found-winner
 				 (tic-tac-toe--get-winner-horizontally))))
@@ -146,7 +152,7 @@ Coordinates use a starting index of 0."
 	nil))))
 
 (defun tic-tac-toe--get-winner-horizontally ()
-  "Checks winner horizontally."
+  "Check for a winner horizontally."
   (let ((has-won nil)
 	(winning-coordinates ()))
     (dotimes (row 3)
@@ -162,17 +168,15 @@ Coordinates use a starting index of 0."
       )))
 
 (defun tic-tac-toe--highlight-winning-coordinates (coordinates)
-  "Coordinates."
+  "Highlight the winning COORDINATES."
   (dolist (coordinate coordinates)
-    (coorder-set-text-property-at (car coordinate) (car (cdr coordinate)))
-    (message "Highlight checker: %s" (coorder-get-char-at (car coordinate) (car (cdr coordinate))))
-    )
-  )
+    (coorder-set-text-property-at (car coordinate) (car (cdr coordinate)) 'tic-tac-toe--win-face)
+    ))
 
 ;; EVENTS
 ;; 
 (defun tic-tac-toe--on-found-winner ()
-  "Handles what hoppens when someone wins."
+  "Handles what happens when someone wins."
   (message "Found!"))
 
 (defun tic-tac-toe--get-current-symbol ()
