@@ -29,8 +29,9 @@
 
 (defconst tic-tac-toe--player-symbols '("x" "o") "Symbols to be used by players.")
 
-(define-derived-mode tic-tac-toe-mode special-mode "tic-tac-toe-mode")
+(defface tic-tac-toe--test-face '((t . (:background "green" :foreground "black"))) "Test Face" :group 'tic-tac-toe-faces)
 
+(define-derived-mode tic-tac-toe-mode special-mode "tic-tac-toe-mode")
 (defun tic-tac-toe-config ()
   (local-set-key (kbd "C-c SPC") 'tic-tac-toe-place))
 
@@ -76,6 +77,12 @@ Coordinates use a starting index of 0."
   (beginning-of-line)
   (dotimes (x col)
     (right-char 1))
+  )
+
+(defun coorder-set-text-property-at (col row)
+  "Set the text property at the given position."
+  (coorder-position-point-at col row)
+  (put-text-property (point) (+ (point) 1) 'font-lock-face 'tic-tac-toe--test-face)
   )
 
 (defun coorder-current-col ()
@@ -155,7 +162,9 @@ Coordinates use a starting index of 0."
       )))
 
 (defun tic-tac-toe--highlight-winning-coordinates (coordinates)
+  "Coordinates."
   (dolist (coordinate coordinates)
+    (coorder-set-text-property-at (car coordinate) (car (cdr coordinate)))
     (message "Highlight checker: %s" (coorder-get-char-at (car coordinate) (car (cdr coordinate))))
     )
   )
