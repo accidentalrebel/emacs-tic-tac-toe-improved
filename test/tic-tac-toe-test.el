@@ -32,6 +32,17 @@
     (equal
      (buffer-string) "axx\nxbx\nxxc"))))
 
+(ert-deftest coorder-get-char-at ()
+  (with-temp-buffer
+    (coorder-initialize-area 3 3 "x")
+    (coorder-place-char-at 0 0 "a")
+    (coorder-place-char-at 1 1 "b")
+    (coorder-place-char-at 2 2 "c")
+    (should (equal (coorder-get-char-at 0 0) "a"))
+    (should (equal (coorder-get-char-at 1 1) "b"))
+    (should (equal (coorder-get-char-at 2 2) "c"))
+    (should (equal (coorder-get-char-at 2 0) "x"))))
+
 (ert-deftest tic-tac-toe--switch-to-next-player ()
   (with-temp-buffer
     (setq-local tic-tac-toe--current-player-number 1)
