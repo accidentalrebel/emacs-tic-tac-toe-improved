@@ -73,6 +73,7 @@ Coordinates use a starting index of 0."
   (goto-char (point-min))
   (dotimes (y row)
     (next-line 1))
+  (beginning-of-line)
   (dotimes (x col)
     (right-char 1))
   )
