@@ -63,8 +63,7 @@ Coordinates use a starting index of 0."
   (coorder-position-point-at col row)
   (delete-char 1)
   (insert char)
-  (left-char)
-  )
+  (left-char))
 
 (defun coorder-get-char-at (col row)
   "Gets the char at COL and ROW coordinates.
@@ -76,30 +75,23 @@ Coordinates use a starting index of 0."
   "Positions the point at COL and ROW coondinates.
 Coordinates use a starting index of 0."
   (goto-char (point-min))
-  (dotimes (y row)
-    (forward-line 1))
-  (beginning-of-line)
-  (dotimes (x col)
-    (right-char 1))
-  )
+  (forward-line row)
+  (move-to-column col))
 
 (defun coorder-set-text-property-at (col row face)
   "Set the text property at COL and ROW with FACE."
   (coorder-position-point-at col row)
-  (put-text-property (point) (+ (point) 1) 'font-lock-face face)
-  )
+  (put-text-property (point) (+ (point) 1) 'font-lock-face face))
 
 (defun coorder-current-col ()
   "Return the current col at point position.
 Has an index of 0."
-  (current-column)
-  )
+  (current-column))
 
 (defun coorder-current-row ()
   "Return the current row at point position.
 Has an index of 0."
-  (- (line-number-at-pos) 1)
-  )
+  (- (line-number-at-pos) 1))
 
 ;; MAIN
 ;;
@@ -108,8 +100,7 @@ Has an index of 0."
   (let ((inhibit-read-only t))
     (goto-char (point-min))
     (coorder-initialize-area 3 3 "-")
-    )
-  )
+    ))
 
 (defun tic-tac-toe-start ()
   "Start the game."
@@ -123,8 +114,7 @@ Has an index of 0."
   (tic-tac-toe-mode)
   (tic-tac-toe--initialize-board)
   (setq tic-tac-toe--current-player-number 1)
-  (message "Start!")
-  )
+  (message "Start!"))
 
 ;; HELPERS
 ;;
@@ -136,8 +126,7 @@ Has an index of 0."
     (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
     (tic-tac-toe--check-winner)
     (tic-tac-toe--switch-to-next-player)
-    )
-  )
+    ))
 
 (defun tic-tac-toe--check-winner ()
   "Check if any player has already won."
@@ -189,8 +178,7 @@ Has an index of 0."
     (if (> new-player-number (length tic-tac-toe--player-symbols))
 	(setq tic-tac-toe--current-player-number 1)
       (setq tic-tac-toe--current-player-number new-player-number))
-    )
-  )
+    ))
 
 (local-set-key (kbd "<f5>") (lambda ()
 			      (interactive)
