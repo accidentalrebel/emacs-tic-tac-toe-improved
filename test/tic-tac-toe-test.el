@@ -43,6 +43,29 @@
     (should (equal (coorder-get-char-at 2 2) "c"))
     (should (equal (coorder-get-char-at 2 0) "x"))))
 
+(ert-deftest tic-tac-toe--get-set-colors ()
+  (with-temp-buffer
+    (coorder-initialize-area 1 1 "x")
+    (coorder-set-color-at 0 0 'green 'black)
+    (should (equal (coorder-get-color-at 0 0) '(:background "green" :foreground "black")))
+    (should (equal (coorder-get-bg-color-at 0 0) "green"))
+    (should (equal (coorder-get-fg-color-at 0 0) "black"))
+
+    (erase-buffer)
+    (coorder-initialize-area 1 1 "x")
+    (coorder-set-bg-color-at 0 0 'green)
+    (should (equal (coorder-get-color-at 0 0) '(:background "green")))
+    (should (equal (coorder-get-bg-color-at 0 0) "green"))
+    (should (equal (coorder-get-fg-color-at 0 0) nil))
+
+    (erase-buffer)
+    (coorder-initialize-area 1 1 "x")
+    (coorder-set-fg-color-at 0 0 'black)
+    (should (equal (coorder-get-color-at 0 0) '(:foreground "black")))
+    (should (equal (coorder-get-bg-color-at 0 0) nil))
+    (should (equal (coorder-get-fg-color-at 0 0) "black"))
+    ))
+
 (ert-deftest tic-tac-toe--switch-to-next-player ()
   (with-temp-buffer
     (setq-local tic-tac-toe--current-player-number 1)
