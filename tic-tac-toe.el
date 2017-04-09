@@ -65,6 +65,14 @@ Coordinates use a starting index of 0."
   (insert char)
   (left-char))
 
+(defun coorder-place-char-at-area (col row width height char)
+  "Place."
+  (dotimes (x height)
+    (dotimes (y width)
+      (coorder-place-char-at (+ col x) (+ row y) char)
+      )
+    ))
+
 (defun coorder-get-char-at (col row)
   "Gets the char at COL and ROW coordinates.
 Coordinates use a starting index of 0."
@@ -137,7 +145,8 @@ Has an index of 0."
   "Initialize the board with a \"-\" character."
   (let ((inhibit-read-only t))
     (goto-char (point-min))
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-area 3 5 " ")
+    (coorder-place-char-at-area 0 0 3 3"-")
     ))
 
 (defun tic-tac-toe-start ()
@@ -247,7 +256,9 @@ Has an index of 0."
 ;; 
 (defun tic-tac-toe--on-found-winner ()
   "Handles what happens when someone wins."
-  (message "Found!"))
+  (coorder-position-point-at 0 4)
+  (message "WINS!")
+  (insert (concat "Player " (number-to-string tic-tac-toe--current-player-number) " wins!")))
 
 (defun tic-tac-toe--get-current-symbol ()
   "Gets the current symbol for the current player."
