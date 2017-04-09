@@ -60,10 +60,9 @@ ROWS specify the number of rows.
   "Place char at COL and ROW coordinates.
 CHAR can be any value.
 Coordinates use a starting index of 0."
-  (coorder-position-point-at col row)
-  (delete-char 1)
-  (insert char)
-  (left-char))
+  (save-excursion
+    (coorder-position-point-at col row)
+    (replace-rectangle (point) (+ (point) 1) char)))
 
 (defun coorder-place-char-at-area (col row width height char)
   "Place."
@@ -156,10 +155,11 @@ Has an index of 0."
   (switch-to-buffer "*scratch*")
 					;(buffer-disable-undo "*scratch*")
   (let ((inhibit-read-only t))
-    (erase-buffer)
-    )
+    (erase-buffer))
+
   (tic-tac-toe-mode)
   (tic-tac-toe--initialize-board)
+  (coorder-position-point-at 1 1)
   (setq tic-tac-toe--current-player-number 1)
   (message "Start!"))
 
