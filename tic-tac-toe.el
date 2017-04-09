@@ -94,6 +94,11 @@ Coordinates use a starting index of 0."
 	 
     (put-text-property (point) (+ (point) 1) 'font-lock-face property-list)))
 
+(defun coorder-reset-color-at (col row)
+  "Reset the color text property at COL and ROW."
+  (coorder-position-point-at col row)
+  (remove-text-properties (point) (+ (point) 1) '(font-lock-face)))
+
 (defun coorder-set-bg-color-at (col row bg-color)
   "Set the color at COL and ROW with just the BG-COLOR."
   (coorder-set-color-at col row bg-color nil))

@@ -51,15 +51,13 @@
     (should (equal (coorder-get-bg-color-at 0 0) "green"))
     (should (equal (coorder-get-fg-color-at 0 0) "black"))
 
-    (erase-buffer)
-    (coorder-initialize-area 1 1 "x")
+    (coorder-reset-color-at 0 0)
     (coorder-set-bg-color-at 0 0 'green)
     (should (equal (coorder-get-color-at 0 0) '(:background "green")))
     (should (equal (coorder-get-bg-color-at 0 0) "green"))
     (should (equal (coorder-get-fg-color-at 0 0) nil))
 
-    (erase-buffer)
-    (coorder-initialize-area 1 1 "x")
+    (coorder-reset-color-at 0 0)
     (coorder-set-fg-color-at 0 0 'black)
     (should (equal (coorder-get-color-at 0 0) '(:foreground "black")))
     (should (equal (coorder-get-bg-color-at 0 0) nil))
