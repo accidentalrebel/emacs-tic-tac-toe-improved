@@ -84,6 +84,7 @@
 
 (ert-deftest tic-tac-toe--check-winner ()
   (with-temp-buffer
+    (setq-local tic-tac-toe--board-start-coordinate '(0 0))
 
     ;; FIRST PLAYER
     (setq-local tic-tac-toe--current-player-number 1)
