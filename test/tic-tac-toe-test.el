@@ -5,26 +5,26 @@
 
 ;;; Code:
 
-(ert-deftest coorder-initialize-area ()
+(ert-deftest coorder-initialize-view-area ()
   (with-temp-buffer
-    (coorder-initialize-area 3 3)
+    (coorder-initialize-view-area 3 3)
     (should
      (equal
       (buffer-string) "   \n   \n   ")))
   (with-temp-buffer
-    (coorder-initialize-area 1 1 "x")
+    (coorder-initialize-view-area 1 1 "x")
     (should
      (equal
       (buffer-string) "x")))
   (with-temp-buffer
-    (coorder-initialize-area 0 1)
+    (coorder-initialize-view-area 0 1)
     (should
      (equal
       (buffer-string) ""))))
 
 (ert-deftest coorder-place-char-at ()
   (with-temp-buffer
-   (coorder-initialize-area 3 3 "x")
+   (coorder-initialize-view-area 3 3 "x")
    (coorder-place-char-at 0 0 "a")
    (coorder-place-char-at 1 1 "b")
    (coorder-place-char-at 2 2 "c")
@@ -34,7 +34,7 @@
 
 (ert-deftest coorder-get-char-at ()
   (with-temp-buffer
-    (coorder-initialize-area 3 3 "x")
+    (coorder-initialize-view-area 3 3 "x")
     (coorder-place-char-at 0 0 "a")
     (coorder-place-char-at 1 1 "b")
     (coorder-place-char-at 2 2 "c")
@@ -45,7 +45,7 @@
 
 (ert-deftest tic-tac-toe--get-set-colors ()
   (with-temp-buffer
-    (coorder-initialize-area 1 1 "x")
+    (coorder-initialize-view-area 1 1 "x")
     (coorder-set-color-at 0 0 'green 'black)
     (should (equal (coorder-get-color-at 0 0) '(:background "green" :foreground "black")))
     (should (equal (coorder-get-bg-color-at 0 0) "green"))
@@ -89,21 +89,21 @@
     (setq-local tic-tac-toe--current-player-number 1)
 
     (erase-buffer)			;
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 0 "x")
     (coorder-place-char-at 1 0 "x")
     (coorder-place-char-at 2 0 "x")
     (should (tic-tac-toe--check-winner))
 
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 1 "x")
     (coorder-place-char-at 1 1 "x")
     (coorder-place-char-at 2 1 "x")
     (should (tic-tac-toe--check-winner))
 
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 2 "x")
     (coorder-place-char-at 1 2 "x")
     (coorder-place-char-at 2 2 "x")
@@ -113,21 +113,21 @@
     (setq-local tic-tac-toe--current-player-number 2)
 
     (erase-buffer)			;
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 0 "o")
     (coorder-place-char-at 1 0 "o")
     (coorder-place-char-at 2 0 "o")
     (should (tic-tac-toe--check-winner))
 
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 1 "o")
     (coorder-place-char-at 1 1 "o")
     (coorder-place-char-at 2 1 "o")
     (should (tic-tac-toe--check-winner))
 
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 2 "o")
     (coorder-place-char-at 1 2 "o")
     (coorder-place-char-at 2 2 "o")
@@ -135,7 +135,7 @@
 
     ;; VERTICAL
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 1 0 "o")
     (coorder-place-char-at 1 1 "o")
     (coorder-place-char-at 1 2 "o")
@@ -143,25 +143,25 @@
 
     ;; DIAGONAL
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 0 "o")
     (coorder-place-char-at 1 1 "o")
     (coorder-place-char-at 2 2 "o")
     (should (tic-tac-toe--check-winner))
 
     (erase-buffer)
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 2 "o")
     (coorder-place-char-at 1 1 "o")
     (coorder-place-char-at 2 0 "o")
     (should (tic-tac-toe--check-winner))
 
     ;; NON-MATCHING
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (should (not (tic-tac-toe--check-winner)))
 
     (erase-buffer)			;
-    (coorder-initialize-area 3 3 "-")
+    (coorder-initialize-view-area 3 3 "-")
     (coorder-place-char-at 0 0 "x")
     (coorder-place-char-at 1 0 "o")
     (coorder-place-char-at 2 0 "x")

@@ -24,10 +24,16 @@
 ;; 
 
 ;;; Code:
+(defconst tic-tac-toe--player-symbols '("x" "o")
+  "Symbols to be used by players.")
+
+(defconst tic-tac-toe--board-start-coordinate '(2 2)
+  "Starting coodinate for the board.")
+
+(defconst tic-tac-toe--view-area-size '(30 12)
+  "The size of the view area.")
 
 (defvar tic-tac-toe--current-player-number 1 "Number of the current player.")
-
-(defconst tic-tac-toe--player-symbols '("x" "o") "Symbols to be used by players.")
 
 (defface tic-tac-toe--win-face '((t . (:background "green" :foreground "black"))) "Test Face" :group 'tic-tac-toe-faces)
 
@@ -41,7 +47,7 @@
 
 ;; COORDER
 ;;
-(defun coorder-initialize-area (cols rows &optional char)
+(defun coorder-initialize-view-area (cols rows &optional char)
   "Initialize an area for drawing.
 COLS specify the number of columns.
 ROWS specify the number of rows.
@@ -144,8 +150,8 @@ Has an index of 0."
   "Initialize the board with a \"-\" character."
   (let ((inhibit-read-only t))
     (goto-char (point-min))
-    (coorder-initialize-area 3 5 " ")
-    (coorder-place-char-at-area 0 0 3 3"-")
+    (coorder-initialize-view-area (car tic-tac-toe--view-area-size) (car (cdr tic-tac-toe--view-area-size)) " ")
+    (coorder-place-char-at-area (car tic-tac-toe--board-start-coordinate) (car (cdr tic-tac-toe--board-start-coordinate)) 3 3 "-")
     ))
 
 (defun tic-tac-toe-start ()
@@ -159,7 +165,7 @@ Has an index of 0."
 
   (tic-tac-toe-mode)
   (tic-tac-toe--initialize-board)
-  (coorder-position-point-at 1 1)
+  (coorder-position-point-at 3 3)
   (setq tic-tac-toe--current-player-number 1)
   (message "Start!"))
 
@@ -259,7 +265,8 @@ Has an index of 0."
 (defun tic-tac-toe--display-notif-message (str)
   "Display STR at the dedicated notification area."
   (save-excursion
-    (coorder-position-point-at 0 4)
+    (message "PLACING")
+    (coorder-position-point-at 0 7)
     (replace-rectangle (point) (+ (point) (string-width str)) str)
     ))
 
