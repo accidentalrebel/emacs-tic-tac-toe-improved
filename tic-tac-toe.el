@@ -1,4 +1,4 @@
-;;; tic-tac-toe.el --- Tic Tac Toe Game              -*- lexical-binding: t; -*-
+;;; tic-tac-toe.el --- Tic Tac Toe Game
 
 ;; Copyright (C) 2017  AccidentalRebel
 
@@ -170,9 +170,11 @@ Has an index of 0."
   "Check if any player has already won."
   (save-excursion
     (let ((winning-coordinates (catch 'found-winner
-				 (tic-tac-toe--get-winner-horizontally))))
+				 (tic-tac-toe--get-winner-horizontally)
+				 (tic-tac-toe--get-winner-vertically)
+				 (tic-tac-toe--get-winner-diagonally))))
       (if winning-coordinates
-	  (progn 
+	  (progn
 	    (tic-tac-toe--highlight-winning-coordinates winning-coordinates)
 	    (tic-tac-toe--on-found-winner)
 	    t)
@@ -193,6 +195,47 @@ Has an index of 0."
       (when has-won
 	(throw 'found-winner winning-coordinates))
       )))
+
+(defun tic-tac-toe--get-winner-vertically ()
+  "Check for a winner horizontally."
+  (let ((has-won nil)
+	(winning-coordinates ()))
+    (dotimes (col 3)
+      (setq has-won t)
+      (setq winning-coordinates ())
+      (dotimes (row 3 has-won)
+	(when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
+	  (setq has-won nil))
+	(setq winning-coordinates (append winning-coordinates (list (list col row))))
+	)
+      (when has-won
+	(throw 'found-winner winning-coordinates))
+      )))
+
+(defun tic-tac-toe--get-winner-diagonally ()
+  "Check for a winner diagonally."
+  (let ((has-won t)
+	(winning-coordinates ()))
+
+    (dotimes (step 3)
+      (when (not (equal (coorder-get-char-at step step) (tic-tac-toe--get-current-symbol)))
+    	(setq has-won nil))
+      (setq winning-coordinates (append winning-coordinates (list (list step step))))
+      )
+    (when has-won
+      (throw 'found-winner winning-coordinates))
+
+    (setq has-won t)
+    (setq winning-coordinates ())
+    (dotimes (step 3)
+      (when (not (equal (coorder-get-char-at step (- 2 step)) (tic-tac-toe--get-current-symbol)))
+    	(setq has-won nil))
+      (setq winning-coordinates (append winning-coordinates (list (list step (- 2 step)))))
+      )
+
+    (when has-won
+      (throw 'found-winner winning-coordinates))))
+
 
 (defun tic-tac-toe--highlight-winning-coordinates (coordinates)
   "Highlight the winning COORDINATES."
