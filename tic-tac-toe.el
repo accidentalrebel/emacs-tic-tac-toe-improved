@@ -86,7 +86,21 @@ Coordinates use a starting index of 0."
 (defun coorder-set-color-at (col row bg-color fg-color)
   "Set the color at COL and ROW with BG-COLOR and FG-COLOR."
   (coorder-position-point-at col row)
-  (put-text-property (point) (+ (point) 1) 'font-lock-face `(:background ,(symbol-name bg-color) :foreground ,(symbol-name fg-color))))
+  (let (property-list '())
+    (when bg-color
+      (setq property-list (plist-put property-list ':background (symbol-name bg-color))))
+    (when fg-color
+      (setq property-list (plist-put property-list ':foreground (symbol-name fg-color))))
+	 
+    (put-text-property (point) (+ (point) 1) 'font-lock-face property-list)))
+
+(defun coorder-set-bg-color-at (col row bg-color)
+  "Set the color at COL and ROW with just the BG-COLOR."
+  (coorder-set-color-at col row bg-color nil))
+
+(defun coorder-set-fg-color-at (col row fg-color)
+  "Set the color at COL and ROW with just the FG-COLOR."
+  (coorder-set-color-at col row nil fg-color))
 
 (defun coorder-get-color-at (col row)
   "Get the color at COL and ROW.
