@@ -83,6 +83,11 @@ Coordinates use a starting index of 0."
   (coorder-position-point-at col row)
   (put-text-property (point) (+ (point) 1) 'font-lock-face face))
 
+(defun coorder-set-color-at (col row bg-color fg-color)
+  "Set the color at COL and ROW with BG-COLOR and FG-COLOR."
+  (coorder-position-point-at col row)
+  (put-text-property (point) (+ (point) 1) 'font-lock-face `(:background ,(symbol-name bg-color) :foreground ,(symbol-name fg-color))))
+
 (defun coorder-current-col ()
   "Return the current col at point position.
 Has an index of 0."
@@ -159,7 +164,7 @@ Has an index of 0."
 (defun tic-tac-toe--highlight-winning-coordinates (coordinates)
   "Highlight the winning COORDINATES."
   (dolist (coordinate coordinates)
-    (coorder-set-text-property-at (car coordinate) (car (cdr coordinate)) 'tic-tac-toe--win-face)
+    (coorder-set-color-at (car coordinate) (car (cdr coordinate)) 'green 'black)
     ))
 
 ;; EVENTS
