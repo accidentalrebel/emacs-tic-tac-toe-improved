@@ -1,4 +1,4 @@
-;;; tic-tac-toe.el --- Tic Tac Toe Game
+;;; tic-tac-toe.el --- Tic Tac Toe Game                  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2017  AccidentalRebel
 
@@ -196,7 +196,7 @@ Has an index of 0."
     (dotimes (row 3)
       (setq has-won t)
       (setq winning-coordinates ())
-      (dotimes (col 3 has-won)
+      (dotimes (col 3)
 	(when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
 	  (setq has-won nil))
 	(setq winning-coordinates (append winning-coordinates (list (list col row))))
@@ -212,7 +212,7 @@ Has an index of 0."
     (dotimes (col 3)
       (setq has-won t)
       (setq winning-coordinates ())
-      (dotimes (row 3 has-won)
+      (dotimes (row 3)
 	(when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
 	  (setq has-won nil))
 	(setq winning-coordinates (append winning-coordinates (list (list col row))))
@@ -257,7 +257,6 @@ Has an index of 0."
 (defun tic-tac-toe--on-found-winner ()
   "Handles what happens when someone wins."
   (coorder-position-point-at 0 4)
-  (message "WINS!")
   (insert (concat "Player " (number-to-string tic-tac-toe--current-player-number) " wins!")))
 
 (defun tic-tac-toe--get-current-symbol ()
