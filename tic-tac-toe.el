@@ -177,12 +177,6 @@ Has an index of 0."
 	  (tic-tac-toe--switch-to-next-player))
       (tic-tac-toe--display-notif-message "Tile is already occupied!"))))
 
-(defun tic-tac-toe--display-notif-message (str)
-  "Display STR at the dedicated notification area."
-  (coorder-position-point-at 0 4)
-  (insert str)
-  )
-
 (defun tic-tac-toe--check-winner ()
   "Check if any player has already won."
   (save-excursion
@@ -258,6 +252,15 @@ Has an index of 0."
   "Highlight the winning COORDINATES."
   (dolist (coordinate coordinates)
     (coorder-set-color-at (car coordinate) (car (cdr coordinate)) 'green 'black)
+    ))
+
+;; DISPLAY
+;;
+(defun tic-tac-toe--display-notif-message (str)
+  "Display STR at the dedicated notification area."
+  (save-excursion
+    (coorder-position-point-at 0 4)
+    (replace-rectangle (point) (+ (point) (string-width str)) str)
     ))
 
 ;; EVENTS
