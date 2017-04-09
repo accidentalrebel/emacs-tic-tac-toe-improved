@@ -205,10 +205,12 @@ Has an index of 0."
       (setq has-won t)
       (setq winning-coordinates ())
       (dotimes (col 3)
-	(when (not (equal (coorder-get-char-at col row) (tic-tac-toe--get-current-symbol)))
-	  (setq has-won nil))
-	(setq winning-coordinates (append winning-coordinates (list (list col row))))
-	)
+	(let ((current-col (+ col (car tic-tac-toe--board-start-coordinate)))
+	      (current-row (+ row (car (cdr tic-tac-toe--board-start-coordinate)))))
+	  (when (not (equal (coorder-get-char-at current-col current-row) (tic-tac-toe--get-current-symbol)))
+	    (setq has-won nil))
+	  (setq winning-coordinates (append winning-coordinates (list (list current-col current-row))))
+	))
       (when has-won
 	(throw 'found-winner winning-coordinates))
       )))
@@ -237,9 +239,12 @@ Has an index of 0."
 	(winning-coordinates ()))
 
     (dotimes (step 3)
-      (when (not (equal (coorder-get-char-at step step) (tic-tac-toe--get-current-symbol)))
-    	(setq has-won nil))
-      (setq winning-coordinates (append winning-coordinates (list (list step step))))
+      (let ((current-col (+ step (car tic-tac-toe--board-start-coordinate)))
+	    (current-row (+ step (car (cdr tic-tac-toe--board-start-coordinate)))))
+	
+	(when (not (equal (coorder-get-char-at current-col current-row) (tic-tac-toe--get-current-symbol)))
+	  (setq has-won nil))
+	(setq winning-coordinates (append winning-coordinates (list (list current-col current-row)))))
       )
     (when has-won
       (throw 'found-winner winning-coordinates))
@@ -247,9 +252,11 @@ Has an index of 0."
     (setq has-won t)
     (setq winning-coordinates ())
     (dotimes (step 3)
-      (when (not (equal (coorder-get-char-at step (- 2 step)) (tic-tac-toe--get-current-symbol)))
-    	(setq has-won nil))
-      (setq winning-coordinates (append winning-coordinates (list (list step (- 2 step)))))
+      (let ((current-col (+ step (car tic-tac-toe--board-start-coordinate)))
+	    (current-row (+ (- 2 step) (car (cdr tic-tac-toe--board-start-coordinate)))))
+	(when (not (equal (coorder-get-char-at current-col current-row) (tic-tac-toe--get-current-symbol)))
+	  (setq has-won nil))
+	(setq winning-coordinates (append winning-coordinates (list (list current-col current-row)))))
       )
 
     (when has-won
