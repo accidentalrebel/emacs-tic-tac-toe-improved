@@ -133,6 +133,29 @@
     (coorder-place-char-at 2 2 "o")
     (should (tic-tac-toe--check-winner))
 
+    ;; VERTICAL
+    (erase-buffer)
+    (coorder-initialize-area 3 3 "-")
+    (coorder-place-char-at 1 0 "o")
+    (coorder-place-char-at 1 1 "o")
+    (coorder-place-char-at 1 2 "o")
+    (should (tic-tac-toe--check-winner))
+
+    ;; DIAGONAL
+    (erase-buffer)
+    (coorder-initialize-area 3 3 "-")
+    (coorder-place-char-at 0 0 "o")
+    (coorder-place-char-at 1 1 "o")
+    (coorder-place-char-at 2 2 "o")
+    (should (tic-tac-toe--check-winner))
+
+    (erase-buffer)
+    (coorder-initialize-area 3 3 "-")
+    (coorder-place-char-at 0 2 "o")
+    (coorder-place-char-at 1 1 "o")
+    (coorder-place-char-at 2 0 "o")
+    (should (tic-tac-toe--check-winner))
+
     ;; NON-MATCHING
     (coorder-initialize-area 3 3 "-")
     (should (not (tic-tac-toe--check-winner)))
