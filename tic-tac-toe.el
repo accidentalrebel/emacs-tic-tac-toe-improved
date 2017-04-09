@@ -170,10 +170,18 @@ Has an index of 0."
   (interactive)
   (let ((inhibit-read-only t)
 	(current-symbol (tic-tac-toe--get-current-symbol)))
-    (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
-    (tic-tac-toe--check-winner)
-    (tic-tac-toe--switch-to-next-player)
-    ))
+    (if (equal "-" (coorder-get-char-at (coorder-current-col) (coorder-current-row)))
+	(progn
+	  (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
+	  (tic-tac-toe--check-winner)
+	  (tic-tac-toe--switch-to-next-player))
+      (tic-tac-toe--display-notif-message "Tile is already occupied!"))))
+
+(defun tic-tac-toe--display-notif-message (str)
+  "Display STR at the dedicated notification area."
+  (coorder-position-point-at 0 4)
+  (insert str)
+  )
 
 (defun tic-tac-toe--check-winner ()
   "Check if any player has already won."
@@ -256,8 +264,7 @@ Has an index of 0."
 ;; 
 (defun tic-tac-toe--on-found-winner ()
   "Handles what happens when someone wins."
-  (coorder-position-point-at 0 4)
-  (insert (concat "Player " (number-to-string tic-tac-toe--current-player-number) " wins!")))
+  (tic-tac-toe--display-notif-message (concat "Player " (number-to-string tic-tac-toe--current-player-number) " wins!")))
 
 (defun tic-tac-toe--get-current-symbol ()
   "Gets the current symbol for the current player."
