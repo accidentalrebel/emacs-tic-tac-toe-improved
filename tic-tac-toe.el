@@ -88,6 +88,20 @@ Coordinates use a starting index of 0."
   (coorder-position-point-at col row)
   (put-text-property (point) (+ (point) 1) 'font-lock-face `(:background ,(symbol-name bg-color) :foreground ,(symbol-name fg-color))))
 
+(defun coorder-get-color-at (col row)
+  "Get the color at COL and ROW.
+Returns (:background BG-COLOR :foreground FG-COLOR)"
+  (coorder-position-point-at col row)
+  (get-text-property (point) 'font-lock-face))
+
+(defun coorder-get-bg-color-at (col row)
+  "Gets the background color at COL and ROW."
+  (plist-get (coorder-get-color-at col row) ':background))
+
+(defun coorder-get-fg-color-at (col row)
+  "Gets the foreground color at COL and ROW."
+  (plist-get (coorder-get-color-at col row) ':foreground))
+
 (defun coorder-current-col ()
   "Return the current col at point position.
 Has an index of 0."
