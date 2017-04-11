@@ -175,13 +175,16 @@ Has an index of 0."
   "Places a symbol on the current point position."
   (interactive)
   (let ((inhibit-read-only t)
-	(current-symbol (tic-tac-toe--get-current-symbol)))
-    (if (equal "-" (coorder-get-char-at (coorder-current-col) (coorder-current-row)))
+	(current-symbol (tic-tac-toe--get-current-symbol))
+	(char-at-point (coorder-get-char-at (coorder-current-col) (coorder-current-row))))
+    (if (equal "-" char-at-point)
 	(progn
 	  (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
 	  (tic-tac-toe--check-winner)
 	  (tic-tac-toe--switch-to-next-player))
-      (tic-tac-toe--display-notif-message "Tile is already occupied!"))))
+      (if (or (equal (car tic-tac-toe--player-symbols) char-at-point) (equal (car (cdr tic-tac-toe--player-symbols)) char-at-point))
+	  (tic-tac-toe--display-notif-message "Tile is already occupied!")
+	(tic-tac-toe--display-notif-message "Cannot place there!")))))
 
 (defun tic-tac-toe--check-winner ()
   "Check if any player has already won."
