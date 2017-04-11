@@ -85,13 +85,12 @@ Can accept a multiline string."
     (let ((lines (split-string str "[\n\r]+")))
       (dotimes (index (length lines))
 	(coorder-position-point-at col (+ row index))
-	(replace-rectangle (point) (+ (point) 1) (nth index lines)))
-      )))
+	(replace-rectangle (point) (+ (point) (string-width (nth index lines))) (nth index lines))))))
 
 (defun coorder-place-char-at-area (col row width height char)
   "Place."
-  (dotimes (x height)
-    (dotimes (y width)
+  (dotimes (y height)
+    (dotimes (x width)
       (coorder-place-char-at (+ col x) (+ row y) char)
       )
     ))
@@ -180,7 +179,7 @@ Has an index of 0."
   (interactive)
   (other-window 1)
   (switch-to-buffer "*scratch*")
-					;(buffer-disable-undo "*scratch*")
+
   (let ((inhibit-read-only t))
     (erase-buffer))
 
@@ -299,9 +298,8 @@ Has an index of 0."
   "Display STR at the dedicated notification area."
   (save-excursion
     (message "PLACING")
-    (coorder-position-point-at 0 7)
-    (replace-rectangle (point) (+ (point) (string-width str)) str)
-    ))
+    (coorder-place-char-at-area 0 7 (car tic-tac-toe--view-area-size) 1 " ")
+    (coorder-place-string-at-area 0 7 str)))
 
 ;; EVENTS
 ;; 
