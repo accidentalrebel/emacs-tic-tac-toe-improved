@@ -33,6 +33,14 @@
 (defconst tic-tac-toe--view-area-size '(30 12)
   "The size of the view area.")
 
+(defconst tic-tac-toe--board-border-sprite
+  "╔═══╗
+║   ║
+║   ║
+║   ║
+╚═══╝"
+ "The sprite of the border of the board.")
+
 (defvar tic-tac-toe--current-player-number 1 "Number of the current player.")
 
 (defface tic-tac-toe--win-face '((t . (:background "green" :foreground "black"))) "Test Face" :group 'tic-tac-toe-faces)
@@ -69,6 +77,16 @@ Coordinates use a starting index of 0."
   (save-excursion
     (coorder-position-point-at col row)
     (replace-rectangle (point) (+ (point) 1) char)))
+
+(defun coorder-place-string-at-area (col row str)
+  "Places at COL and ROW a given STR.
+Can accept a multiline string."
+  (save-excursion
+    (let ((lines (split-string str "[\n\r]+")))
+      (dotimes (index (length lines))
+	(coorder-position-point-at col (+ row index))
+	(replace-rectangle (point) (+ (point) 1) (nth index lines)))
+      )))
 
 (defun coorder-place-char-at-area (col row width height char)
   "Place."
@@ -148,10 +166,13 @@ Has an index of 0."
 ;;
 (defun tic-tac-toe--initialize-board ()
   "Initialize the board with a \"-\" character."
-  (let ((inhibit-read-only t))
+  (let ((inhibit-read-only t)
+	(board-start-coordinate-x (car tic-tac-toe--board-start-coordinate))
+	(board-start-coordinate-y (car (cdr tic-tac-toe--board-start-coordinate))))
     (goto-char (point-min))
     (coorder-initialize-view-area (car tic-tac-toe--view-area-size) (car (cdr tic-tac-toe--view-area-size)) " ")
-    (coorder-place-char-at-area (car tic-tac-toe--board-start-coordinate) (car (cdr tic-tac-toe--board-start-coordinate)) 3 3 "-")
+    (coorder-place-string-at-area (- board-start-coordinate-x 1) (- board-start-coordinate-y 1) tic-tac-toe--board-border-sprite)
+    (coorder-place-char-at-area board-start-coordinate-x board-start-coordinate-y 3 3 "-")
     ))
 
 (defun tic-tac-toe-start ()
