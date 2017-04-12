@@ -202,7 +202,8 @@ Has an index of 0."
 	(progn
 	  (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
 	  (tic-tac-toe--check-winner)
-	  (tic-tac-toe--switch-to-next-player))
+	  (tic-tac-toe--switch-to-next-player)
+	  (tic-tac-toe--display-current-player))
       (if (or (equal (car tic-tac-toe--player-symbols) char-at-point) (equal (car (cdr tic-tac-toe--player-symbols)) char-at-point))
 	  (tic-tac-toe--display-notif-message "Tile is already occupied!")
 	(tic-tac-toe--display-notif-message "Cannot place there!")))))
@@ -323,9 +324,7 @@ Has an index of 0."
     (if (> new-player-number (length tic-tac-toe--player-symbols))
 	(setq tic-tac-toe--current-player-number 1)
       (setq tic-tac-toe--current-player-number new-player-number))
-    )
-  (tic-tac-toe--display-current-player)
-  )
+    ))
 
 (local-set-key (kbd "<f5>") (lambda ()
 			      (interactive)
