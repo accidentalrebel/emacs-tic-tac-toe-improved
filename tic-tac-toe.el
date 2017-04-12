@@ -53,7 +53,7 @@
 
 (add-hook 'tic-tac-toe-mode-hook 'tic-tac-toe--control-config)
 
-;; COORDER
+;; COORDER HELPER FUNCTIONS
 ;;
 (defun coorder-initialize-view-area (cols rows &optional char)
   "Initialize an area for drawing.
@@ -161,6 +161,19 @@ Has an index of 0."
 Has an index of 0."
   (- (line-number-at-pos) 1))
 
+
+;; DEV ENVIRONMENT HELPER FUNCTIONS
+;;
+(defun dev-env-smart-open-elisp-output-window (buffer)
+  "A helper that opens BUFFER for output.
+Useful for quick devving with elisp."
+  (setq buffer (get-buffer "*scratch*"))
+  (if (get-buffer-window buffer)
+      (switch-to-buffer-other-window buffer)
+    (if (get-buffer-window buffer t)
+	(switch-to-buffer-other-frame buffer)
+      (switch-to-buffer-other-window buffer))))
+
 ;; MAIN
 ;;
 (defun tic-tac-toe--initialize-board ()
@@ -177,17 +190,18 @@ Has an index of 0."
 (defun tic-tac-toe-start ()
   "Start the game."
   (interactive)
-  (other-window 1)
-  (switch-to-buffer "*scratch*")
 
-  (let ((inhibit-read-only t))
+  (let ((inhibit-read-only t)
+	(buffer (get-buffer "*scratch*")))
+    (dev-env-smart-open-elisp-output-window buffer)
+
     (erase-buffer)
     (tic-tac-toe-mode)
     (tic-tac-toe--initialize-board)
     (coorder-position-point-at 3 3)
     (setq tic-tac-toe--current-player-number 1)
     (tic-tac-toe--display-current-player)
-  )
+    )
   (message "Start!"))
 
 ;; HELPERS
