@@ -161,31 +161,8 @@ Has an index of 0."
 Has an index of 0."
   (- (line-number-at-pos) 1))
 
-
 ;; DEV ENVIRONMENT HELPER FUNCTIONS
 ;;
-(defun dev-env-smart-open-elisp-output-window (buffer)
-  "A helper that opens BUFFER for output.
-Useful for quick devving with elisp."
-  (setq buffer (get-buffer "*scratch*"))
-  (if (get-buffer-window buffer)
-      (switch-to-buffer-other-window buffer)
-    (if (get-buffer-window buffer t)
-	(switch-to-buffer-other-frame buffer)
-      (switch-to-buffer-other-window buffer))))
-
-(defun dev-env-setup-build-keys (to-call-on-build)
-  "A helper that set the keys for quick elisp devving.
-Pressing F5 calls TO-CALL-ON-BUILD."
-  (local-set-key (kbd "<f5>") (lambda ()
-				(interactive)
-				(save-buffer)
-				(eval-buffer)
-				(funcall to-call-on-build)))
-  (local-set-key (kbd "<f6>") (lambda ()
-				(interactive)
-				(shell-command "cask exec ert-runner"))))
-
 ;; MAIN
 ;;
 (defun tic-tac-toe--initialize-board ()
@@ -199,13 +176,16 @@ Pressing F5 calls TO-CALL-ON-BUILD."
     (coorder-place-char-at-area board-start-coordinate-x board-start-coordinate-y 3 3 "-")
     ))
 
+;;;###autoload
 (defun tic-tac-toe-start ()
   "Start the game."
   (interactive)
 
   (let ((inhibit-read-only t)
-	(buffer (get-buffer "*scratch*")))
-    (dev-env-smart-open-elisp-output-window buffer)
+	(buffer (get-buffer "*tic-tac-toe*")))
+    (if (fboundp 'devenv-smart-open-elisp-output-window)
+	(devenv-smart-open-elisp-output-window buffer)
+      (switch-to-buffer "*tic-tac-toe*"))
 
     (erase-buffer)
     (tic-tac-toe-mode)
@@ -352,12 +332,11 @@ Pressing F5 calls TO-CALL-ON-BUILD."
       (setq tic-tac-toe--current-player-number new-player-number))
     ))
 
+;; Settings for dev environment
+(when (fboundp  'devenv-setup-build-keys)
+  (devenv-setup-build-keys 'tic-tac-toe-start))
 
-(defun tic-tac-toe--setup-dev-environment ()
-  "Set up the dev environment."
-  (dev-env-setup-build-keys 'tic-tac-toe-start))
-
-(tic-tac-toe--setup-dev-environment)
+;(tic-tac-toe-start)
 
 (provide 'tic-tac-toe)
 ;;; tic-tac-toe.el ends here
