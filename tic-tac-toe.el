@@ -174,6 +174,18 @@ Useful for quick devving with elisp."
 	(switch-to-buffer-other-frame buffer)
       (switch-to-buffer-other-window buffer))))
 
+(defun dev-env-setup-build-keys (to-call-on-build)
+  "A helper that set the keys for quick elisp devving.
+Pressing F5 calls TO-CALL-ON-BUILD."
+  (local-set-key (kbd "<f5>") (lambda ()
+				(interactive)
+				(save-buffer)
+				(eval-buffer)
+				(funcall to-call-on-build)))
+  (local-set-key (kbd "<f6>") (lambda ()
+				(interactive)
+				(shell-command "cask exec ert-runner"))))
+
 ;; MAIN
 ;;
 (defun tic-tac-toe--initialize-board ()
@@ -340,14 +352,12 @@ Useful for quick devving with elisp."
       (setq tic-tac-toe--current-player-number new-player-number))
     ))
 
-(local-set-key (kbd "<f5>") (lambda ()
-			      (interactive)
-			      (save-buffer)
-			      (eval-buffer)
-			      (tic-tac-toe-start)))
-(local-set-key (kbd "<f6>") (lambda ()
-			      (interactive)
-			      (shell-command "cask exec ert-runner")))
+
+(defun tic-tac-toe--setup-dev-environment ()
+  "Set up the dev environment."
+  (dev-env-setup-build-keys 'tic-tac-toe-start))
+
+(tic-tac-toe--setup-dev-environment)
 
 (provide 'tic-tac-toe)
 ;;; tic-tac-toe.el ends here
