@@ -32,6 +32,14 @@
     (equal
      (buffer-string) "axx\nxbx\nxxc"))))
 
+(ert-deftest coorder-place-string-at-area ()
+  (with-temp-buffer
+    (coorder-initialize-view-area 4 4 "-")
+    (coorder-place-string-at-area 1 1 "xo\n x
+xo")
+    (should
+     (equal (buffer-string) "----\n-xo-\n- x-\n-xo-"))))
+
 (ert-deftest coorder-get-char-at ()
   (with-temp-buffer
     (coorder-initialize-view-area 3 3 "x")
