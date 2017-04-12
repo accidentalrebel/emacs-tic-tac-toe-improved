@@ -181,12 +181,13 @@ Has an index of 0."
   (switch-to-buffer "*scratch*")
 
   (let ((inhibit-read-only t))
-    (erase-buffer))
-
-  (tic-tac-toe-mode)
-  (tic-tac-toe--initialize-board)
-  (coorder-position-point-at 3 3)
-  (setq tic-tac-toe--current-player-number 1)
+    (erase-buffer)
+    (tic-tac-toe-mode)
+    (tic-tac-toe--initialize-board)
+    (coorder-position-point-at 3 3)
+    (setq tic-tac-toe--current-player-number 1)
+    (tic-tac-toe--display-current-player)
+  )
   (message "Start!"))
 
 ;; HELPERS
@@ -297,9 +298,14 @@ Has an index of 0."
 (defun tic-tac-toe--display-notif-message (str)
   "Display STR at the dedicated notification area."
   (save-excursion
-    (message "PLACING")
+    (coorder-place-char-at-area 0 8 (car tic-tac-toe--view-area-size) 1 " ")
+    (coorder-place-string-at-area 1 8 str)))
+
+(defun tic-tac-toe--display-current-player ()
+  "Displays the current player on screen."
+  (save-excursion
     (coorder-place-char-at-area 0 7 (car tic-tac-toe--view-area-size) 1 " ")
-    (coorder-place-string-at-area 0 7 str)))
+    (coorder-place-string-at-area 1 7 (concat "Current player: " (number-to-string  tic-tac-toe--current-player-number) "(" (tic-tac-toe--get-current-symbol) ")" ))))
 
 ;; EVENTS
 ;; 
@@ -317,7 +323,9 @@ Has an index of 0."
     (if (> new-player-number (length tic-tac-toe--player-symbols))
 	(setq tic-tac-toe--current-player-number 1)
       (setq tic-tac-toe--current-player-number new-player-number))
-    ))
+    )
+  (tic-tac-toe--display-current-player)
+  )
 
 (local-set-key (kbd "<f5>") (lambda ()
 			      (interactive)
