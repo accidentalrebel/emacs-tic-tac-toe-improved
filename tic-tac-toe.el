@@ -183,6 +183,9 @@ Has an index of 0."
 
   (let ((inhibit-read-only t)
 	(buffer (get-buffer "*tic-tac-toe*")))
+    ;; devenv-smart-open-elisp-output-window is a code in my emacs conf
+    ;; What it does is that it handles where it would output the window
+    ;; This does not run if you do not have this function.
     (if (fboundp 'devenv-smart-open-elisp-output-window)
 	(devenv-smart-open-elisp-output-window buffer)
       (switch-to-buffer "*tic-tac-toe*"))
@@ -333,10 +336,10 @@ Has an index of 0."
     ))
 
 ;; Settings for dev environment
+;;; This calls a code in my emacs conf that sets f5 and f6 keys for quick building.
+;;; This wont run if you do not have this function.
 (when (fboundp  'devenv-setup-build-keys)
   (devenv-setup-build-keys 'tic-tac-toe-start))
-
-;(tic-tac-toe-start)
 
 (provide 'tic-tac-toe)
 ;;; tic-tac-toe.el ends here
