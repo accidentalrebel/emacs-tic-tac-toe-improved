@@ -99,6 +99,7 @@ Can accept a multiline string."
   "Gets the char at COL and ROW coordinates.
 Coordinates use a starting index of 0."
   (coorder-position-point-at col row)
+  (message "char at pos %s" (string (char-after))) ;; TEST
   (string (char-after)))
 
 (defun coorder-position-point-at (col row)
@@ -210,12 +211,30 @@ Has an index of 0."
     (if (equal "-" char-at-point)
 	(progn
 	  (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
-	  (unless(tic-tac-toe--check-and-handle-winner)
+	  (unless (or (tic-tac-toe--check-and-handle-winner)
+		      (tic-tac-toe--check-and-handle-if-board-full))
 	    (tic-tac-toe--switch-to-next-player)
 	    (tic-tac-toe--display-current-player)))
       (if (or (equal (car tic-tac-toe--player-symbols) char-at-point) (equal (car (cdr tic-tac-toe--player-symbols)) char-at-point))
 	  (tic-tac-toe--display-notif-message "Tile is already occupied!")
 	(tic-tac-toe--display-notif-message "Cannot place there!")))))
+
+(defun tic-tac-toe--check-and-handle-if-board-full ()
+  "Check if the board is full."
+  (save-excursion
+    (let ((start-col (car tic-tac-toe--board-start-coordinate))
+	  (start-row (car (cdr tic-tac-toe--board-start-coordinate)))
+	  (is-full t))
+      (dotimes (row 3)
+	(dotimes (col 3)
+	  (when (and is-full (string= "-" (coorder-get-char-at (+ start-col col) (+ start-row row))))
+	    (setq is-full nil))
+	  )
+	)
+      (when is-full
+	(tic-tac-toe--display-notif-message "Board is full!"))
+      ))
+  )
 
 (defun tic-tac-toe--check-and-handle-winner ()
   "Check if any player has already won."
