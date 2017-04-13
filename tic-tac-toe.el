@@ -99,7 +99,6 @@ Can accept a multiline string."
   "Gets the char at COL and ROW coordinates.
 Coordinates use a starting index of 0."
   (coorder-position-point-at col row)
-  (message "char at pos %s" (string (char-after))) ;; TEST
   (string (char-after)))
 
 (defun coorder-position-point-at (col row)
@@ -231,10 +230,11 @@ Has an index of 0."
 	    (setq is-full nil))
 	  )
 	)
-      (when is-full
-	(tic-tac-toe--display-notif-message "Board is full!"))
-      ))
-  )
+      (if is-full
+	  (progn
+	    (tic-tac-toe--display-notif-message "Board is full!")
+	    t)
+	nil))))
 
 (defun tic-tac-toe--check-and-handle-winner ()
   "Check if any player has already won."
