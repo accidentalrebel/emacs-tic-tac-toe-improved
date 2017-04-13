@@ -210,14 +210,14 @@ Has an index of 0."
     (if (equal "-" char-at-point)
 	(progn
 	  (coorder-place-char-at (coorder-current-col) (coorder-current-row) current-symbol)
-	  (tic-tac-toe--check-winner)
-	  (tic-tac-toe--switch-to-next-player)
-	  (tic-tac-toe--display-current-player))
+	  (unless(tic-tac-toe--check-and-handle-winner)
+	    (tic-tac-toe--switch-to-next-player)
+	    (tic-tac-toe--display-current-player)))
       (if (or (equal (car tic-tac-toe--player-symbols) char-at-point) (equal (car (cdr tic-tac-toe--player-symbols)) char-at-point))
 	  (tic-tac-toe--display-notif-message "Tile is already occupied!")
 	(tic-tac-toe--display-notif-message "Cannot place there!")))))
 
-(defun tic-tac-toe--check-winner ()
+(defun tic-tac-toe--check-and-handle-winner ()
   "Check if any player has already won."
   (save-excursion
     (let ((winning-coordinates (catch 'found-winner
