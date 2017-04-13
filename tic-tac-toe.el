@@ -181,13 +181,13 @@ Has an index of 0."
   "Start the game."
   (interactive)
 
-  (let ((inhibit-read-only t)
-	(buffer (get-buffer "*tic-tac-toe*")))
+  (let ((inhibit-read-only t))
     ;; devenv-smart-open-elisp-output-window is a code in my emacs conf
     ;; What it does is that it handles where it would output the window
     ;; This does not run if you do not have this function.
     (if (fboundp 'devenv-smart-open-elisp-output-window)
-	(devenv-smart-open-elisp-output-window buffer)
+	(devenv-smart-open-elisp-output-window "*tic-tac-toe*")
+      (other-window 1)
       (switch-to-buffer "*tic-tac-toe*"))
 
     (erase-buffer)
