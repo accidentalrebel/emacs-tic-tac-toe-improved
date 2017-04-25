@@ -69,7 +69,7 @@
 	(board-start-coordinate-y (car (cdr tic-tac-toe--board-start-coordinate))))
     (goto-char (point-min))
     (coordinate-initialize-view-area (car tic-tac-toe--view-area-size) (car (cdr tic-tac-toe--view-area-size)) " ")
-    (coordinate-place-string-at-area (- board-start-coordinate-x 1) (- board-start-coordinate-y 1) tic-tac-toe--board-border-sprite)
+    (coordinate-place-string-at-area (- board-start-coordinate-x 1) (- board-start-coordinate-y 1) tic-tac-toe--board-border-sprite '(:background "brown"))
     (coordinate-place-char-at-area board-start-coordinate-x board-start-coordinate-y 3 3 "-")
     ))
 
