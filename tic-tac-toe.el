@@ -218,7 +218,7 @@
 (defun tic-tac-toe--highlight-winning-coordinates (coordinates)
   "Highlight the winning COORDINATES."
   (dolist (coordinate coordinates)
-    (coordinate-set-color-at (car coordinate) (car (cdr coordinate)) 'green 'black)
+    (coordinate-set-text-property-at (car coordinate) (car (cdr coordinate)) '(:foreground "black" :background "green"))
     ))
 
 ;; DISPLAY
