@@ -133,7 +133,7 @@
 	)
       (if is-full
 	  (progn
-	    (tic-tac-toe--display-notif-message "Board is full!")
+	    (tic-tac-toe--display-notif-message "Board is full!\nCall M-x tic-tac-toe\nto start a new game.")
 	    t)
 	nil))))
 
@@ -242,7 +242,7 @@
 (defun tic-tac-toe--on-found-winner ()
   "Handles what happens when someone wins."
   (setq tic-tac-toe--winner-player-number tic-tac-toe--current-player-number)
-  (tic-tac-toe--display-notif-message (concat "Player " (number-to-string tic-tac-toe--winner-player-number) " wins!")))
+  (tic-tac-toe--display-notif-message (concat "Player " (number-to-string tic-tac-toe--winner-player-number) " wins!\nCall M-x tic-tac-toe-start\nto start a new game!")))
 
 (defun tic-tac-toe--get-current-symbol ()
   "Gets the current symbol for the current player."
