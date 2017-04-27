@@ -7,27 +7,6 @@
 
 (require 'coordinate (locate-user-emacs-file "dev/coordinate/coordinate"))
 
-(ert-deftest tic-tac-toe--get-set-colors ()
-  (with-temp-buffer
-    (coordinate-initialize-view-area 1 1 "x")
-    (coordinate-set-color-at 0 0 'green 'black)
-    (should (equal (coordinate-get-color-at 0 0) '(:background "green" :foreground "black")))
-    (should (equal (coordinate-get-bg-color-at 0 0) "green"))
-    (should (equal (coordinate-get-fg-color-at 0 0) "black"))
-
-    (coordinate-reset-color-at 0 0)
-    (coordinate-set-bg-color-at 0 0 'green)
-    (should (equal (coordinate-get-color-at 0 0) '(:background "green")))
-    (should (equal (coordinate-get-bg-color-at 0 0) "green"))
-    (should (equal (coordinate-get-fg-color-at 0 0) nil))
-
-    (coordinate-reset-color-at 0 0)
-    (coordinate-set-fg-color-at 0 0 'black)
-    (should (equal (coordinate-get-color-at 0 0) '(:foreground "black")))
-    (should (equal (coordinate-get-bg-color-at 0 0) nil))
-    (should (equal (coordinate-get-fg-color-at 0 0) "black"))
-    ))
-
 (ert-deftest tic-tac-toe--switch-to-next-player ()
   (with-temp-buffer
     (setq-local tic-tac-toe--current-player-number 1)

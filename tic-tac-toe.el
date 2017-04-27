@@ -115,7 +115,9 @@
 		(tic-tac-toe--display-current-player)))
 	  (if (or (equal (car tic-tac-toe--player-symbols) char-at-point) (equal (car (cdr tic-tac-toe--player-symbols)) char-at-point))
 	      (tic-tac-toe--display-notif-message "Tile is already occupied!")
-	    (tic-tac-toe--display-notif-message "Cannot place there!"))))))
+	    (tic-tac-toe--display-notif-message "Cannot place there!")
+	    (message "Text property: %s" (coordinate-get-text-property-at (coordinate-current-col) (coordinate-current-row)))
+	    )))))
 
 (defun tic-tac-toe--check-and-handle-if-board-full ()
   "Check if the board is full."
