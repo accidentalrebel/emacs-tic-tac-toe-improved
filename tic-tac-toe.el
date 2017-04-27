@@ -248,7 +248,7 @@
 (defun tic-tac-toe--on-found-winner ()
   "Handles what happens when someone wins."
   (setq tic-tac-toe--winner-player-number tic-tac-toe--current-player-number)
-  (tic-tac-toe--play-sound "win.wav")
+  (tic-tac-toe--play-sound "win.wav" t)
   (tic-tac-toe--display-notif-message (concat "Player " (number-to-string tic-tac-toe--winner-player-number) " wins!\nCall M-x tic-tac-toe-start to\nstart a new game!")))
 
 (defun tic-tac-toe--get-current-symbol ()
@@ -264,10 +264,15 @@
     ))
 
 ;; HELPERS
-(defun tic-tac-toe--play-sound (sound-file-name)
-  "Internal convenience function that plays SOUND-FILE-NAME."
-  (when (not tic-tac-toe--disable-sounds)
-    (play-sound-file (expand-file-name (concat "assets/audio/" sound-file-name)))))
+(defun tic-tac-toe--play-sound (sound-file-name &optional play-async)
+  "Internal convenience function that plays SOUND-FILE-NAME.
+&optional PLAY-ASYNC whether to play async or not."
+  (let ((audio-file (expand-file-name (concat "assets/audio/" sound-file-name))))
+    (when (not tic-tac-toe--disable-sounds)
+      (if play-async
+	  (play-sound-file-async audio-file)
+	(play-sound-file audio-file))
+      )))
 
 ;; Settings for dev environment
 ;;; This calls a code in my emacs conf that sets f5 and f6 keys for quick building.
