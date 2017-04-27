@@ -82,10 +82,11 @@
     ;; devenv-smart-open-elisp-output-window is a code in my emacs conf
     ;; What it does is that it handles where it would output the window
     ;; This does not run if you do not have this function.
-    (if (fboundp 'devenv-smart-open-elisp-output-window)
-	(devenv-smart-open-elisp-output-window "*tic-tac-toe*")
-      (other-window 1)
-      (switch-to-buffer "*tic-tac-toe*"))
+    (when (not (equal (buffer-name) "*tic-tac-toe*"))
+      (if (fboundp 'devenv-smart-open-elisp-output-window)
+	  (devenv-smart-open-elisp-output-window "*tic-tac-toe*")
+	(other-window 1)
+	(switch-to-buffer "*tic-tac-toe*")))
 
     (erase-buffer)
     (tic-tac-toe-mode)
