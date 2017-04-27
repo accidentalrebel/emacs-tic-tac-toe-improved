@@ -120,6 +120,7 @@
 	  (if (or (equal (car tic-tac-toe--player-symbols) char-at-point) (equal (car (cdr tic-tac-toe--player-symbols)) char-at-point))
 	      (tic-tac-toe--display-notif-message "Tile is already occupied!")
 	    (tic-tac-toe--display-notif-message "Cannot place there!")
+	    (tic-tac-toe--play-sound "invalid.wav")
 	    (message "Text property: %s" (coordinate-get-text-property-at (coordinate-current-col) (coordinate-current-row)))
 	    )))))
 
@@ -137,6 +138,7 @@
 	)
       (if is-full
 	  (progn
+	    (tic-tac-toe--play-sound "invalid.wav")
 	    (tic-tac-toe--display-notif-message "Board is full!\nCall M-x tic-tac-toe to\nstart a new game.")
 	    t)
 	nil))))
@@ -246,6 +248,7 @@
 (defun tic-tac-toe--on-found-winner ()
   "Handles what happens when someone wins."
   (setq tic-tac-toe--winner-player-number tic-tac-toe--current-player-number)
+  (tic-tac-toe--play-sound "win.wav")
   (tic-tac-toe--display-notif-message (concat "Player " (number-to-string tic-tac-toe--winner-player-number) " wins!\nCall M-x tic-tac-toe-start to\nstart a new game!")))
 
 (defun tic-tac-toe--get-current-symbol ()
@@ -264,8 +267,7 @@
 (defun tic-tac-toe--play-sound (sound-file-name)
   "Internal convenience function that plays SOUND-FILE-NAME."
   (when (not tic-tac-toe--disable-sounds)
-    (play-sound-file (expand-file-name (concat "assets/audio/" sound-file-name))))
-  )
+    (play-sound-file (expand-file-name (concat "assets/audio/" sound-file-name)))))
 
 ;; Settings for dev environment
 ;;; This calls a code in my emacs conf that sets f5 and f6 keys for quick building.
