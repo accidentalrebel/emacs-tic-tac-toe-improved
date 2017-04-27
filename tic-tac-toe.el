@@ -48,6 +48,8 @@
 
 (defvar tic-tac-toe--winner-player-number 0 "The player number of the winner.")
 
+(defvar tic-tac-toe--disable-sounds nil "Disable the sound from playing.")
+
 (defface tic-tac-toe--win-face '((t . (:background "green" :foreground "black"))) "Test Face" :group 'tic-tac-toe-faces)
 
 (define-derived-mode tic-tac-toe-mode special-mode "tic-tac-toe-mode")
@@ -261,7 +263,8 @@
 ;; HELPERS
 (defun tic-tac-toe--play-sound (sound-file-name)
   "Internal convenience function that plays SOUND-FILE-NAME."
-  (play-sound-file (expand-file-name (concat "assets/audio/" sound-file-name)))
+  (when (not tic-tac-toe--disable-sounds)
+    (play-sound-file (expand-file-name (concat "assets/audio/" sound-file-name))))
   )
 
 ;; Settings for dev environment
