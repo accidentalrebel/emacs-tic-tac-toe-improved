@@ -110,6 +110,7 @@
 	(if (equal "-" char-at-point)
 	    (progn
 	      (coordinate-place-char-at (coordinate-current-col) (coordinate-current-row) current-symbol)
+	      (tic-tac-toe--play-sound "blip.wav")
 	      (unless (or (tic-tac-toe--check-and-handle-winner)
 			  (tic-tac-toe--check-and-handle-if-board-full))
 		(tic-tac-toe--switch-to-next-player)
@@ -256,6 +257,12 @@
 	(setq tic-tac-toe--current-player-number 1)
       (setq tic-tac-toe--current-player-number new-player-number))
     ))
+
+;; HELPERS
+(defun tic-tac-toe--play-sound (sound-file-name)
+  "Internal convenience function that plays SOUND-FILE-NAME."
+  (play-sound-file (expand-file-name (concat "assets/audio/" sound-file-name)))
+  )
 
 ;; Settings for dev environment
 ;;; This calls a code in my emacs conf that sets f5 and f6 keys for quick building.
