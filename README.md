@@ -5,6 +5,8 @@
 
 Tic-tac-toe game project for me to practice my Emacs Lisp.
 
+![Imgur](http://i.imgur.com/jfeNUDp.gif) ![Imgur](http://i.imgur.com/HwhLhwy.gif)
+
 This is an improved version of the same unfinished game [I made long ago](https://github.com/accidentalrebel/emacs-tic-tac-toe-game). This one has specific keymapped controls, sound effects, as well as unit tests!
 
 Uses my personal [coordinate.el](https://github.com/accidentalrebel/coordinate.el) library.
